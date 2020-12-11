@@ -32,6 +32,7 @@ public class ModBlocker {
     public static boolean transform(FMLHandshakeMessages.C2SModListReply modListReply){
         for(String clientModID : modListReply.getModList()){
             if(!ModList.get().isLoaded(clientModID)){
+                System.out.println(Config.CONFIG.WHITELISTED_MODS.get());
                 if(!Config.CONFIG.WHITELISTED_MODS.get().contains(clientModID)){
                     LOGGER.warn(String.format("The connection to a client was terminated because the client has a not allowed mod installed! '%s'", clientModID));
                     return false;
