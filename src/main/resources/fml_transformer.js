@@ -3,16 +3,16 @@ function initializeCoreMod() {
         'test': {
             'target': {
                 'type': 'METHOD',
-                'class': 'net.minecraftforge.fml.network.FMLHandshakeHandler',
-                'methodName': 'handleClientModListOnServer',
-                'methodDesc': '(Lnet/minecraftforge/fml/network/FMLHandshakeMessages$C2SModListReply;Ljava/util/function/Supplier;)V'
+                'class': 'net.minecraftforge.network.HandshakeHandler',
+                'methodName': 'handleServerModListOnClient',
+                'methodDesc': '(Lnet/minecraftforge/network/HandshakeMessages$S2CModList;Ljava/util/function/Supplier;)V'
             },
             'transformer': function(method) {
-                print('[Mod Blocker Transformer]: Patching FMLHandshakeMessages$C2SModListReply');
+                print('[Mod Blocker Transformer]: Patching HandshakeMessages$S2CModList');
 
                 var owner = "de/canitzp/modblocker/ModBlocker";
                 var name = "transform";
-                var desc = "(Lnet/minecraftforge/fml/network/FMLHandshakeMessages$C2SModListReply;)Z";
+                var desc = "(Lnet/minecraftforge/network/HandshakeMessages$S2CModList;)Z";
                 var instr = method.instructions;
 
                 var ASMAPI = Java.type('net.minecraftforge.coremod.api.ASMAPI');

@@ -1,14 +1,13 @@
 package de.canitzp.modblocker;
 
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ExtensionPoint;
+import net.minecraftforge.fml.IExtensionPoint;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.network.FMLHandshakeMessages;
-import net.minecraftforge.fml.network.FMLNetworkConstants;
-import org.apache.commons.lang3.tuple.Pair;
+import net.minecraftforge.network.HandshakeMessages;
+import net.minecraftforge.network.NetworkConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -25,11 +24,11 @@ public class ModBlocker {
     
     public ModBlocker() {
         LOGGER.info(String.format("%s was found and is getting loaded.", MODNAME));
-        ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
+        ModLoadingContext.get().registerExtensionPoint(IExtensionPoint.DisplayTest.class, () -> new IExtensionPoint.DisplayTest(() -> NetworkConstants.IGNORESERVERONLY, (s, aBoolean) -> true));
         ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, Config.SPEC);
     }
     
-    public static boolean transform(FMLHandshakeMessages.C2SModListReply modListReply){
+    public static boolean transform(HandshakeMessages.S2CModList modListReply){
         for(String clientModID : modListReply.getModList()){
             if(!ModList.get().isLoaded(clientModID)){
                 System.out.println(Config.CONFIG.WHITELISTED_MODS.get());
